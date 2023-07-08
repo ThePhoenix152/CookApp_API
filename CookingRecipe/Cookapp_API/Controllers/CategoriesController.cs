@@ -34,7 +34,7 @@ namespace Cookapp_API.Controllers
                 return NotFound();
             }
             //return await _context.Accounts.ToListAsync();
-            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB_Production"], DataAccess.ESqlProvider.SQLSERVER, 120);
             List<CategoryDTO> accounts = bll.GetCategory();
             return accounts;
             //return await _context.Categories.ToListAsync();
