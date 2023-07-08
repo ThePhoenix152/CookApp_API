@@ -25,8 +25,14 @@ builder.Services.AddCors(options =>
                       });
 });
 
-builder.Services.AddDbContext<CookingRecipeDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("CookappDB")));
+if (builder.Environment.IsDevelopment()) {
+    builder.Services.AddDbContext<CookingRecipeDbContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("CookappDB")));
+} else {
+    builder.Services.AddDbContext<CookingRecipeDbContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("CookappDB_Production")));
+}
+
 //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 //    .AddJwtBearer(options =>
 //    {
