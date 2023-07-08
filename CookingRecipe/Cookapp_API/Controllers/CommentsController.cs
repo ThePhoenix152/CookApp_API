@@ -35,7 +35,7 @@ namespace Cookapp_API.Controllers
                 return NotFound();
             }
             //return await _context.Accounts.ToListAsync();
-            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB_Production"], DataAccess.ESqlProvider.SQLSERVER, 120);
             List<CommentDTO> comments = bll.GetComments(new List<string>());
             return comments;
         }
@@ -48,7 +48,7 @@ namespace Cookapp_API.Controllers
             {
                 return NotFound();
             }
-            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB_Production"], DataAccess.ESqlProvider.SQLSERVER, 120);
             List<CommentDTO> comments = bll.GetCommentsByPostID(id);
             return comments;
 
