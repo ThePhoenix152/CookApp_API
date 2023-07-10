@@ -181,6 +181,22 @@ namespace Cookapp_API.DataAccess.BLL
             {
                 throw ex;
             }
+        }        
+        public int CreatePlan(AddNewPlan plan, string postid, string accountid)
+        {
+            try
+            {
+                if (_sqlProvider == ESqlProvider.SQLSERVER)
+                {
+                    DAL.AllInOneDAL dal = GetDAL_MSSQLSERVER();
+                    return dal.CreatePlan(plan, postid,accountid);
+                }
+                else { throw new Exception("not support unknown sqlProvider"); }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

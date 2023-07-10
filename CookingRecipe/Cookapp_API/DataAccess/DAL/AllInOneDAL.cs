@@ -17,7 +17,6 @@ namespace Cookapp_API.DataAccess.DAL
         public const string _TABLE_NAME_CATEGORY = "category";
         public const string _TABLE_NAME_COMMENT = "comments";
         public const string _TABLE_NAME_PLAN = "[CookingRecipeDB].[dbo].[plan]";
-        public const string _TABLE_NAME_POSTPLAN = "post_plan";
         public AllInOneDAL() : base() { }
 
         public AllInOneDAL(string connectionString) : base(connectionString) { }
@@ -335,9 +334,8 @@ namespace Cookapp_API.DataAccess.DAL
         {
             try
             {
-                string query = "SELECT a.starttime, a.endtime, a.dayinschedule, a.ref_account, b.ref_post, c.title FROM " + _TABLE_NAME_PLAN + " a " +
-                    "left join " + _TABLE_NAME_POSTPLAN + " b on a.id = b.ref_plan " +
-                    "left join " + _TABLE_NAME_POST + " c on b.ref_post = c.id ";
+                string query = "SELECT a.starttime, a.endtime, a.dayinschedule,a.ref_post, a.ref_account, b.title, b.image FROM " + _TABLE_NAME_PLAN + " a " +
+                    "left join " + _TABLE_NAME_POST + " b on a.ref_post = b.id ";
                 //if (ids != null && ids.Count > 0)
                 //    query += "where a.id in(" + GlobalFuncs.ArrayStringToStringFilter(ids) + ")";
                 List<Hashtable> arrHsObj;
@@ -367,9 +365,8 @@ namespace Cookapp_API.DataAccess.DAL
         {
             try
             {
-                string query = "SELECT a.starttime, a.endtime, a.dayinschedule, a.ref_account, b.ref_post, c.title FROM " + _TABLE_NAME_PLAN + " a " +
-                    "left join " + _TABLE_NAME_POSTPLAN + " b on a.id = b.ref_plan " +
-                    "left join " + _TABLE_NAME_POST + " c on b.ref_post = c.id " +
+                string query = "SELECT a.starttime, a.endtime, a.dayinschedule,a.ref_post, a.ref_account, b.title, b.image FROM " + _TABLE_NAME_PLAN + " a " +
+                    "left join " + _TABLE_NAME_POST + " b on a.ref_post = b.id "+
                     "where a.ref_account = '" + id + "'";
                 //if (ids != null && ids.Count > 0)
                 //    query += "where a.id in(" + GlobalFuncs.ArrayStringToStringFilter(ids) + ")";
@@ -395,6 +392,54 @@ namespace Cookapp_API.DataAccess.DAL
                 throw ex;
             }
 
+        }
+        public int CreatePlan(AddNewPlan plan, string postid, string accountid)
+        {
+            try
+            {
+                if(plan == null)
+                    return 0;
+                if (plan.starttime == null)
+                    plan.starttime = new TimeOnly(0, 0, 0);
+                if (plan.endtime == null)
+                    plan.endtime = new TimeOnly(0, 0, 0);
+                string query = "insert into " + _TABLE_NAME_POST;
+                string filed = " values ";
+                if (plan != null)
+                {
+                    filed += "('" + Guid.NewGuid().ToString() + "'";
+                    filed += (filed != " values " ? "," : "") + "'" + plan.starttime.ToString("HH:mm:ss") + "'";
+                    filed += (filed != " values " ? "," : "") + "'" + plan.endtime.ToString("HH:mm:ss") + "'";
+                    if (!string.IsNullOrEmpty(plan.dayinschedule))
+                    {
+                        filed += (filed != " values " ? "," : "") + "'" + plan.dayinschedule + "'";
+                    }
+
+                    
+                    filed += (filed != " values " ? "," : "") + "'" + accountid + "'";
+
+
+                    filed += (filed != " values " ? "," : "") + "'" + postid  + "'";
+
+                    
+
+
+
+                }
+                if (filed != " values ")
+                {
+                    query += filed;
+                    return ExecuteNonQuery(query);
+                }
+                else
+                    return 0;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
     }
 }

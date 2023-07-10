@@ -41,7 +41,7 @@ namespace Cookapp_API.Controllers
         }
 
         // GET: api/Recipeposts/5
-        [HttpGet("{id}")]
+        [HttpGet("getplanbyaccountid")]
         public async Task<ActionResult<List<GetPlanDTO>>> GetPlan(string id)
         {
           if (_context.Recipeposts == null)
@@ -53,19 +53,20 @@ namespace Cookapp_API.Controllers
             return post;
         }
 
-        //// PUT: api/Recipeposts/5
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        //public async Task<ActionResult<UpdatePostDTO>> PutRecipepost(string id, UpdatePostDTO post)
-        //{
-        //    if (id != post.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-        //    AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
-        //    bll.UpdatePost(id, post);
-        //    return post;
-        //}
+        // P: api/Recipeposts/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost("addPlan")]
+        public async Task<ActionResult<AddNewPlan>> PutRecipepost(AddNewPlan plan, string postid, string accountid)
+        {
+            if (_context.Recipeposts == null)
+            {
+                return NotFound();
+            }
+
+            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            bll.CreatePlan(plan, postid, accountid);
+            return plan;
+        }
 
         //// POST: api/Recipeposts
         //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -79,7 +80,7 @@ namespace Cookapp_API.Controllers
         //    AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
         //    bll.CreatePost(post);
         //    return post;
-           
+
         //}
 
         //// DELETE: api/Recipeposts/5

@@ -292,6 +292,15 @@ namespace Cookapp_API.DataAccess
                 return blvalue;
             return false;
         }
+        public static TimeOnly ConvertStringToTimeOnly(string svalue)
+        {
+            TimeOnly result = new TimeOnly(0,0,0);
+            if (string.IsNullOrEmpty(svalue))
+                return result;
+            string[] sv = svalue.Split(':');
+            result = new TimeOnly(Convert.ToInt32(sv[0]), Convert.ToInt32(sv[1]), Convert.ToInt32(sv[2]));
+            return result;
+        }
 
         //<@van CODE_20220823>
         public static string ReplaceUsernamePassword(string connectionString)
