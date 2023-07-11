@@ -393,7 +393,7 @@ namespace Cookapp_API.DataAccess.DAL
             }
 
         }
-        public int CreatePlan(AddNewPlan plan, string postid, string accountid)
+        public int CreatePlanAtNewTime(AddNewPlan plan, string postid, string accountid)
         {
             try
             {
@@ -440,6 +440,74 @@ namespace Cookapp_API.DataAccess.DAL
 
                 throw ex;
             }
+        }
+        public int CreatePlanAtExistTime(ConfirmAdd plan, string postid, string accountid, string day, string starttime, string endtime)
+        {
+            try
+            {
+                string query = "insert into " + _TABLE_NAME_PLAN;
+                string filed = " values ";
+                if (plan != null)
+                {
+                    filed += "('" + Guid.NewGuid().ToString() + "'";
+                    filed += (filed != " values " ? "," : "") + "'" + starttime + "'";
+                    filed += (filed != " values " ? "," : "") + "'" + endtime + "'";
+                   filed += (filed != " values " ? "," : "") + "'" + day + "'";
+                    filed += (filed != " values " ? "," : "") + "'" + accountid + "'";
+                    filed += (filed != " values " ? "," : "") + "'" + postid  + "')";
+
+                    
+
+
+
+                }
+                if (filed != " values ")
+                {
+                    query += filed;
+                    return ExecuteNonQuery(query);
+                }
+                else
+                    return 0;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public List<GetTimeByDay> GetlistByDay(string id,string day)
+        {
+            try
+            {
+                string query = "SELECT starttime,endtime,dayinschedule, STRING_AGG(b.title,',') as title FROM" + _TABLE_NAME_PLAN + " a " +
+                    "left join " + _TABLE_NAME_POST + " b on a.ref_post = b.id " +
+                    "where a.ref_account = '" + id + "' AND a.dayinschedule = '" + day + "'" +
+                    "  group by starttime, endtime, dayinschedule ";
+                //if (ids != null && ids.Count > 0)
+                //    query += "where a.id in(" + GlobalFuncs.ArrayStringToStringFilter(ids) + ")";
+                List<Hashtable> arrHsObj;
+                arrHsObj = ExecuteArrayHastable(query);
+                GetTimeByDay acc;
+                if (arrHsObj != null && arrHsObj.Count > 0)
+                {
+                    List<GetTimeByDay> arrRes = new List<GetTimeByDay>(arrHsObj.Count);
+                    for (int i = 0; i < arrHsObj.Count; i++)
+                    {
+                        acc = new GetTimeByDay(arrHsObj[i]);
+                        arrRes.Add(acc);
+                    }
+                    return arrRes;
+                }
+                else
+                    return new List<GetTimeByDay> { };
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
         }
     }
 }

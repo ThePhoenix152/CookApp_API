@@ -52,11 +52,22 @@ namespace Cookapp_API.Controllers
             List<GetPlanDTO> post = bll.GetPlanByAccountID(id);
             return post;
         }
+        [HttpGet("getlistbyday")]
+        public async Task<ActionResult<List<GetTimeByDay>>> Gettimebyday(string id, string day)
+        {
+          if (_context.Recipeposts == null)
+          {
+              return NotFound();
+          }
+            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            List<GetTimeByDay> post = bll.GetlistByDay(id,day);
+            return post;
+        }
 
         // P: api/Recipeposts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("addPlan")]
-        public async Task<ActionResult<AddNewPlan>> PutRecipepost(AddNewPlan plan, string postid, string accountid)
+        [HttpPost("addPlanatexisttime")]
+        public async Task<ActionResult<ConfirmAdd>> PostRecipepost(ConfirmAdd plan, string postid, string accountid, string day, string starttime, string endtime)
         {
             if (_context.Recipeposts == null)
             {
@@ -64,9 +75,22 @@ namespace Cookapp_API.Controllers
             }
 
             AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
-            bll.CreatePlan(plan, postid, accountid);
+            bll.CreatePlanAtExistTime(plan, postid, accountid, day, starttime, endtime);
             return plan;
         }
+        [HttpPost("addPlanatnewtime")]
+        public async Task<ActionResult<AddNewPlan>> PostRecipepost2(AddNewPlan plan, string postid, string accountid)
+        {
+            if (_context.Recipeposts == null)
+            {
+                return NotFound();
+            }
+
+            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            bll.CreatePlanAtNewTime(plan, postid, accountid);
+            return plan;
+        }
+
 
         //// POST: api/Recipeposts
         //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

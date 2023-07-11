@@ -149,7 +149,8 @@ namespace Cookapp_API.DataAccess.BLL
 
                 throw ex;
             }
-        }public List<GetPlanDTO> GetPlanByAccountID(string id)
+        }
+        public List<GetPlanDTO> GetPlanByAccountID(string id)
         {
             try
             {
@@ -157,6 +158,23 @@ namespace Cookapp_API.DataAccess.BLL
                 {
                     DAL.AllInOneDAL dal = GetDAL_MSSQLSERVER();
                     return dal.GetPlanByAccountID(id);
+                }
+                else { throw new Exception("not support unknown sqlProvider"); }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public List<GetTimeByDay> GetlistByDay(string id, string day)
+        {
+            try
+            {
+                if (_sqlProvider == ESqlProvider.SQLSERVER)
+                {
+                    DAL.AllInOneDAL dal = GetDAL_MSSQLSERVER();
+                    return dal.GetlistByDay(id,day);
                 }
                 else { throw new Exception("not support unknown sqlProvider"); }
             }
@@ -182,14 +200,30 @@ namespace Cookapp_API.DataAccess.BLL
                 throw ex;
             }
         }        
-        public int CreatePlan(AddNewPlan plan, string postid, string accountid)
+        public int CreatePlanAtNewTime(AddNewPlan plan, string postid, string accountid)
         {
             try
             {
                 if (_sqlProvider == ESqlProvider.SQLSERVER)
                 {
                     DAL.AllInOneDAL dal = GetDAL_MSSQLSERVER();
-                    return dal.CreatePlan(plan, postid,accountid);
+                    return dal.CreatePlanAtNewTime(plan, postid,accountid);
+                }
+                else { throw new Exception("not support unknown sqlProvider"); }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public int CreatePlanAtExistTime(ConfirmAdd plan, string postid, string accountid,string day, string starttime, string endtime)
+        {
+            try
+            {
+                if (_sqlProvider == ESqlProvider.SQLSERVER)
+                {
+                    DAL.AllInOneDAL dal = GetDAL_MSSQLSERVER();
+                    return dal.CreatePlanAtExistTime(plan, postid,accountid,day,starttime, endtime);
                 }
                 else { throw new Exception("not support unknown sqlProvider"); }
             }
