@@ -43,7 +43,7 @@ namespace Cookapp_API.Controllers
                 //string jsonRes = Newtonsoft.Json.JsonConvert.SerializeObject(token);
                 
                 //
-                AccountBLL bll = new AccountBLL(_config["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
+                AccountBLL bll = new AccountBLL(_config["ConnectionStrings:CookappDB_Production"], DataAccess.ESqlProvider.SQLSERVER, 120);
                 LoginResponse account =  bll.isAuthenticated(username, password);
                 account.username = username;
                 account.Password = password;

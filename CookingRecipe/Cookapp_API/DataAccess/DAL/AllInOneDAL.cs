@@ -403,7 +403,7 @@ namespace Cookapp_API.DataAccess.DAL
                     plan.starttime = new TimeOnly(0, 0, 0);
                 if (plan.endtime == null)
                     plan.endtime = new TimeOnly(0, 0, 0);
-                string query = "insert into " + _TABLE_NAME_POST;
+                string query = "insert into " + _TABLE_NAME_PLAN;
                 string filed = " values ";
                 if (plan != null)
                 {
@@ -419,7 +419,7 @@ namespace Cookapp_API.DataAccess.DAL
                     filed += (filed != " values " ? "," : "") + "'" + accountid + "'";
 
 
-                    filed += (filed != " values " ? "," : "") + "'" + postid  + "'";
+                    filed += (filed != " values " ? "," : "") + "'" + postid  + "')";
 
                     
 

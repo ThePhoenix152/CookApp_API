@@ -35,7 +35,7 @@ namespace Cookapp_API.Controllers
               return NotFound();
           }
             //return await _context.Accounts.ToListAsync();
-            AccountBLL bll = new AccountBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            AccountBLL bll = new AccountBLL(_configuration["ConnectionStrings:CookappDB_Production"], DataAccess.ESqlProvider.SQLSERVER, 120);
             List<AccountDTO> accounts = bll.GetAccounts();
             return accounts;
         }
@@ -68,7 +68,7 @@ namespace Cookapp_API.Controllers
             {
                 return Problem("Account Id is not match"); ;
             }
-            AccountBLL bll = new AccountBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            AccountBLL bll = new AccountBLL(_configuration["ConnectionStrings:CookappDB_Production"], DataAccess.ESqlProvider.SQLSERVER, 120);
             bll.UpdateAccount(id, account);
             return account;
 
@@ -84,7 +84,7 @@ namespace Cookapp_API.Controllers
               return Problem("Entity set 'CookingRecipeDbContext.Accounts'  is null.");
           }
             
-            AccountBLL bll = new AccountBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            AccountBLL bll = new AccountBLL(_configuration["ConnectionStrings:CookappDB_Production"], DataAccess.ESqlProvider.SQLSERVER, 120);
             bll.CreateAccount(account);
             return account;
         }
