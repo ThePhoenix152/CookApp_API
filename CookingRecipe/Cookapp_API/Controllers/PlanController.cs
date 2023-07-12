@@ -10,6 +10,8 @@ using Cookapp_API.DataAccess.BLL;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.PostDTO;
 using Microsoft.Extensions.Hosting;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.PlanDTO;
+using Microsoft.Identity.Client;
+using System.Numerics;
 
 namespace Cookapp_API.Controllers
 {
@@ -44,10 +46,6 @@ namespace Cookapp_API.Controllers
         [HttpGet("getplanbyaccountid")]
         public async Task<ActionResult<List<GetPlanDTO>>> GetPlan(string id)
         {
-          if (_context.Recipeposts == null)
-          {
-              return NotFound();
-          }
             AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
             List<GetPlanDTO> post = bll.GetPlanByAccountID(id);
             return post;
@@ -55,10 +53,6 @@ namespace Cookapp_API.Controllers
         [HttpGet("getlistbyday")]
         public async Task<ActionResult<List<GetTimeByDay>>> Gettimebyday(string id, string day)
         {
-          if (_context.Recipeposts == null)
-          {
-              return NotFound();
-          }
             AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
             List<GetTimeByDay> post = bll.GetlistByDay(id,day);
             return post;
@@ -69,10 +63,6 @@ namespace Cookapp_API.Controllers
         [HttpPost("addPlanatexisttime")]
         public async Task<ActionResult<ConfirmAdd>> PostRecipepost(ConfirmAdd plan, string postid, string accountid, string day, string starttime, string endtime)
         {
-            if (_context.Recipeposts == null)
-            {
-                return NotFound();
-            }
 
             AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
             bll.CreatePlanAtExistTime(plan, postid, accountid, day, starttime, endtime);
@@ -81,11 +71,7 @@ namespace Cookapp_API.Controllers
         [HttpPost("addPlanatnewtime")]
         public async Task<ActionResult<AddNewPlan>> PostRecipepost2(AddNewPlan plan, string postid, string accountid)
         {
-            if (_context.Recipeposts == null)
-            {
-                return NotFound();
-            }
-
+            
             AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
             bll.CreatePlanAtNewTime(plan, postid, accountid);
             return plan;
@@ -107,25 +93,14 @@ namespace Cookapp_API.Controllers
 
         //}
 
-        //// DELETE: api/Recipeposts/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteRecipepost(string id)
-        //{
-        //    if (_context.Recipeposts == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var recipepost = await _context.Recipeposts.FindAsync(id);
-        //    if (recipepost == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.Recipeposts.Remove(recipepost);
-        //    await _context.SaveChangesAsync();
-
-        //    return NoContent();
-        //}
+        // DELETE: api/Recipeposts/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteRecipepost(string id)
+        {
+            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            bll.DeletePostFromPlan(id);
+            return NoContent();
+        }
 
         //private bool RecipepostExists(string id)
         //{

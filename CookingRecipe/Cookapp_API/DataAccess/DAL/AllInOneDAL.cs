@@ -5,8 +5,10 @@ using Cookapp_API.DataAccess.DTO.AllInOneDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.CommentDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.PlanDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.PostDTO;
+using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol;
 using System.Collections;
+using System.Numerics;
 
 namespace Cookapp_API.DataAccess.DAL
 {
@@ -475,6 +477,19 @@ namespace Cookapp_API.DataAccess.DAL
 
                 throw ex;
             }
+        }
+        public int DeletePostFromPlan (string id)
+        {
+            try
+            {
+                string query = "DELETE FROM " + _TABLE_NAME_PLAN + " WHERE id = '" + id + "'";
+                return ExecuteNonQuery(query);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
         }
         public List<GetTimeByDay> GetlistByDay(string id,string day)
         {

@@ -199,6 +199,22 @@ namespace Cookapp_API.DataAccess.BLL
             {
                 throw ex;
             }
+        }    
+        public int DeletePostFromPlan(string id)
+        {
+            try
+            {
+                if (_sqlProvider == ESqlProvider.SQLSERVER)
+                {
+                    DAL.AllInOneDAL dal = GetDAL_MSSQLSERVER();
+                    return dal.DeletePostFromPlan(id);
+                }
+                else { throw new Exception("not support unknown sqlProvider"); }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }        
         public int CreatePlanAtNewTime(AddNewPlan plan, string postid, string accountid)
         {
