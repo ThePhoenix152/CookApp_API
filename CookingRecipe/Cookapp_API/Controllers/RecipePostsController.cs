@@ -34,7 +34,7 @@ namespace Cookapp_API.Controllers
             {
                 return NotFound();
             }
-            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB_Production"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
             List<PostDTO> post = bll.GetPosts(new List<string>());
             return post;
         }
@@ -47,7 +47,7 @@ namespace Cookapp_API.Controllers
           {
               return NotFound();
           }
-            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB_Production"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
             List<PostDTO> post = bll.GetPostByID(id);
             return post;
         }
@@ -61,7 +61,7 @@ namespace Cookapp_API.Controllers
             {
                 return BadRequest();
             }
-            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB_Production"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
             bll.UpdatePost(id, post);
             return post;
         }
@@ -75,7 +75,7 @@ namespace Cookapp_API.Controllers
           {
               return Problem("Entity set 'CookingRecipeDbContext.Recipeposts'  is null.");
           }
-            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB_Production"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
             bll.CreatePost(post);
             return post;
            
