@@ -1,6 +1,7 @@
 ﻿using Cookapp_API.Data;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.AccoountDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.AccountDTO;
+using Cookapp_API.DataAccess.DTO.AllInOneDTO.PostDTO;
 
 namespace Cookapp_API.DataAccess.BLL
 {
@@ -94,6 +95,24 @@ namespace Cookapp_API.DataAccess.BLL
             }
 
         }
+        public int changerole(changerole role, string id)
+        {
+            try
+            {
+                if (_sqlProvider == ESqlProvider.SQLSERVER)
+                {
+                    DAL.AccountDAL dal = GetDAL_MSSQLSERVER();
+                    return dal.UpdateRole(role, id);
+                }
+                else { throw new Exception("not support unknown sqlProvider"); }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
 
     }
 }

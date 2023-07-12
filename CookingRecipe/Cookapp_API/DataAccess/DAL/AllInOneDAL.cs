@@ -2,6 +2,7 @@
 using Cookapp_API.Data;
 using Cookapp_API.DataAccess.DTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO;
+using Cookapp_API.DataAccess.DTO.AllInOneDTO.AccountDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.CommentDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.PlanDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.PostDTO;
@@ -194,6 +195,7 @@ namespace Cookapp_API.DataAccess.DAL
                 throw ex;
             }
         }
+        
         public int CreatePost(CreatePostDTO post)
         {
             try
@@ -457,11 +459,6 @@ namespace Cookapp_API.DataAccess.DAL
                    filed += (filed != " values " ? "," : "") + "'" + day + "'";
                     filed += (filed != " values " ? "," : "") + "'" + accountid + "'";
                     filed += (filed != " values " ? "," : "") + "'" + postid  + "')";
-
-                    
-
-
-
                 }
                 if (filed != " values ")
                 {

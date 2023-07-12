@@ -62,14 +62,18 @@ namespace Cookapp_API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<ProfileDTO>> PutAccount(string id, ProfileDTO account)
         {
-            
-            if (id != account.Id)
-            {
-                return Problem("Account Id is not match"); ;
-            }
+          
             AccountBLL bll = new AccountBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
             bll.UpdateAccount(id, account);
             return account;
+
+        }
+        [HttpPut("Changerole")]
+        public async Task<ActionResult<changerole>> UpdateRole(string id, changerole role)
+        {
+            AccountBLL bll = new AccountBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            bll.changerole(role, id);
+            return role;
 
         }
 
@@ -78,11 +82,7 @@ namespace Cookapp_API.Controllers
         [HttpPost]
         public async Task<ActionResult<RegisterDTO>> PostAccount(RegisterDTO account)
         {
-          if (_context.Accounts == null)
-          {
-              return Problem("Entity set 'CookingRecipeDbContext.Accounts'  is null.");
-          }
-            
+        
             AccountBLL bll = new AccountBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
             bll.CreateAccount(account);
             return account;

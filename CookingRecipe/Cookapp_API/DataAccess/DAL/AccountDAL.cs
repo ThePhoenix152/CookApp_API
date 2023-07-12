@@ -167,5 +167,31 @@ namespace Cookapp_API.DataAccess.DAL
             }
             
         }
+        public int UpdateRole(changerole account, string id)
+        {
+            try
+            {
+                string query = "update " + _TABLE_NAME_ACCOUNT;
+                string filed = " SET ";
+
+                if (account != null)
+                {
+                    filed += "roleid = '" + account.Roleid + "'";
+                }
+                if (filed != " SET ")
+                {
+                    query += filed + " where id='" + id + "'";
+                    return ExecuteNonQuery(query);
+                }
+                else
+                    return 0;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
     }
 }

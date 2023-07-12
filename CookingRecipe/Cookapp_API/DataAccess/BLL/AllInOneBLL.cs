@@ -199,7 +199,8 @@ namespace Cookapp_API.DataAccess.BLL
             {
                 throw ex;
             }
-        }    
+        }
+        
         public int DeletePostFromPlan(string id)
         {
             try
