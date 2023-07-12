@@ -270,6 +270,43 @@ namespace Cookapp_API.DataAccess.DAL
                 throw ex;
             }
         }
+        public int CreateComment(AddNewComment comment, string accountid, string postid)
+        {
+            try
+            {
+                string query = "insert into " + _TABLE_NAME_COMMENT;
+                string filed = " values ";
+                if (comment != null)
+                {
+                    filed += "('" + Guid.NewGuid().ToString() + "'";
+                    if (!string.IsNullOrEmpty(comment.Content))
+                    {
+                        filed += (filed != " values " ? "," : "") + "'" + comment.Content + "'";
+                    }
+
+                        filed += (filed != " values " ? "," : "") + "'" + DateTime.Now.ToString("HH:mm:ss") + "'";
+                        filed += (filed != " values " ? "," : "") + "'" + accountid + "'";
+                        filed += (filed != " values " ? "," : "") + "'" + postid + "')";
+                    
+
+                    
+
+                }
+                if (filed != " values ")
+                {
+                    query += filed;
+                    return ExecuteNonQuery(query);
+                }
+                else
+                    return 0;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
         public List<CommentDTO> GetComments(List<string> ids)
         {
             try

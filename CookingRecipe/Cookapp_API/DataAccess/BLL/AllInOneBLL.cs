@@ -233,6 +233,22 @@ namespace Cookapp_API.DataAccess.BLL
                 throw ex;
             }
         }
+        public int CreateComment(AddNewComment comment, string accountid, string postid)
+        {
+            try
+            {
+                if (_sqlProvider == ESqlProvider.SQLSERVER)
+                {
+                    DAL.AllInOneDAL dal = GetDAL_MSSQLSERVER();
+                    return dal.CreateComment(comment, accountid,postid);
+                }
+                else { throw new Exception("not support unknown sqlProvider"); }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public int CreatePlanAtExistTime(ConfirmAdd plan, string postid, string accountid,string day, string starttime, string endtime)
         {
             try

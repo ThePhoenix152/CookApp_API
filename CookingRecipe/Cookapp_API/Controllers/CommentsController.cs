@@ -30,10 +30,6 @@ namespace Cookapp_API.Controllers
 
         public async Task<ActionResult<List<CommentDTO>>> GetComments()
         {
-            if (_context.Comments == null)
-            {
-                return NotFound();
-            }
             //return await _context.Accounts.ToListAsync();
             AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
             List<CommentDTO> comments = bll.GetComments(new List<string>());
@@ -44,10 +40,6 @@ namespace Cookapp_API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<List<CommentDTO>>> GetCommentsByPostID(string id)
         {
-            if (_context.Comments == null)
-            {
-                return NotFound();
-            }
             AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
             List<CommentDTO> comments = bll.GetCommentsByPostID(id);
             return comments;
@@ -61,30 +53,11 @@ namespace Cookapp_API.Controllers
         // POST: api/Comments
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Comment>> PostComment(Comment comment)
+        public async Task<ActionResult<AddNewComment>> PostComment(AddNewComment comment, string accountid, string postid)
         {
-          if (_context.Comments == null)
-          {
-              return Problem("Entity set 'CookingRecipeDbContext.Comments'  is null.");
-          }
-            _context.Comments.Add(comment);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (CommentExists(comment.Id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetComment", new { id = comment.Id }, comment);
+            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            bll.CreateComment(comment, accountid, postid);
+            return comment;
         }
 
         // DELETE: api/Comments/5
