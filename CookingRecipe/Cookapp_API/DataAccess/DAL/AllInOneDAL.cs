@@ -5,6 +5,7 @@ using Cookapp_API.DataAccess.DTO.AllInOneDTO.AccountDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.BlacklistDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.CategoryDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.CommentDTO;
+using Cookapp_API.DataAccess.DTO.AllInOneDTO.NutriDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.PlanDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.PostDTO;
 using Humanizer;
@@ -24,6 +25,7 @@ namespace Cookapp_API.DataAccess.DAL
         public const string _TABLE_NAME_CATEGORY = "category";
         public const string _TABLE_NAME_COMMENT = "comments";
         public const string _TABLE_NAME_BLACKLIST = "blacklist";
+        public const string _TABLE_NAME_NUTRI = "nutrition";
         public const string _TABLE_NAME_PLAN = "[CookingRecipeDB].[dbo].[plan]";
         public AllInOneDAL() : base() { }
 
@@ -50,6 +52,33 @@ namespace Cookapp_API.DataAccess.DAL
                 }
                 else
                     return new List<CategoryDTO> { };
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public List<NutriDTO> GetNutri()
+        {
+            try
+            {
+                string query = "select * from " + _TABLE_NAME_NUTRI;
+                List<Hashtable> arrHsObj;
+                arrHsObj = ExecuteArrayHastable(query);
+                NutriDTO acc;
+                if (arrHsObj != null && arrHsObj.Count > 0)
+                {
+                    List<NutriDTO> arrRes = new List<NutriDTO>(arrHsObj.Count);
+                    for (int i = 0; i < arrHsObj.Count; i++)
+                    {
+                        acc = new NutriDTO(arrHsObj[i]);
+                        arrRes.Add(acc);
+                    }
+                    return arrRes;
+                }
+                else
+                    return new List<NutriDTO> { };
             }
             catch (Exception ex)
             {
@@ -492,6 +521,37 @@ namespace Cookapp_API.DataAccess.DAL
                 throw ex;
             }
         }
+        public int CreateNutri(HandleNutri nutri)
+        {
+            try
+            {
+                string query = "insert into " + _TABLE_NAME_NUTRI;
+                string filed = " values ";
+                if (nutri != null)
+                {
+                    
+                    filed += (filed != " values " ? "," : "") + "('" + Guid.NewGuid().ToString() + "'";
+                   if (!string.IsNullOrEmpty(nutri.Name))
+                    {
+                        filed += (filed != " values " ? "," : "") + "'" + nutri.Name + "')";
+                    }
+
+                }
+                if (filed != " values ")
+                {
+                    query += filed;
+                    return ExecuteNonQuery(query);
+                }
+                else
+                    return 0;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
         public int UpdateCate(string id, AddCategory category)
         {
             try
@@ -503,6 +563,35 @@ namespace Cookapp_API.DataAccess.DAL
                     if (!string.IsNullOrEmpty(category.catetitle))
                     {
                         filed += " catetitle='" + category.catetitle + "'";
+                    }
+                    filed += "where id='" + id + "'"; 
+                }
+                if (filed != " SET ")
+                {
+                    query += filed;
+                    return ExecuteNonQuery(query);
+                }
+                else
+                    return 0;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public int UpdateNutri(string id, HandleNutri nutri)
+        {
+            try
+            {
+                string query = "Update " + _TABLE_NAME_NUTRI;
+                string filed = " SET ";
+                if (nutri != null)
+                {
+                    if (!string.IsNullOrEmpty(nutri.Name))
+                    {
+                        filed += " name='" + nutri.Name + "'";
                     }
                     filed += "where id='" + id + "'"; 
                 }
@@ -802,6 +891,19 @@ namespace Cookapp_API.DataAccess.DAL
             try
             {
                 string query = "DELETE FROM " + _TABLE_NAME_PLAN + " WHERE id = '" + id + "'";
+                return ExecuteNonQuery(query);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+        }
+        public int DeleteNutri (string id)
+        {
+            try
+            {
+                string query = "DELETE FROM " + _TABLE_NAME_NUTRI + " WHERE id = '" + id + "'";
                 return ExecuteNonQuery(query);
             }
             catch (Exception e)

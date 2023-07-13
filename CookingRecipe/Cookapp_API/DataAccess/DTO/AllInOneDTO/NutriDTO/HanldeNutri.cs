@@ -4,15 +4,15 @@ using System.Reflection;
 
 namespace Cookapp_API.DataAccess.DTO.AllInOneDTO.NutriDTO
 {
-    public class NutriDTO
+    public class HandleNutri
+
 
     {
-        public string Id { get; set; } = null!;
 
         public string Name { get; set; }
-        public NutriDTO() { }
+        public HandleNutri() { }
         public void InitEmptyValue() { }
-        public NutriDTO(Hashtable hsObj)
+        public HandleNutri(Hashtable hsObj)
         {
             CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
             Thread.CurrentThread.CurrentCulture = culture;

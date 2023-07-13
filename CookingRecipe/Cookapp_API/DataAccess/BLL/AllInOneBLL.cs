@@ -3,6 +3,7 @@ using Cookapp_API.DataAccess.DTO.AllInOneDTO.AccountDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.BlacklistDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.CategoryDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.CommentDTO;
+using Cookapp_API.DataAccess.DTO.AllInOneDTO.NutriDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.PlanDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.PostDTO;
 
@@ -39,6 +40,23 @@ namespace Cookapp_API.DataAccess.BLL
                 {
                     DAL.AllInOneDAL dal = GetDAL_MSSQLSERVER();
                     return dal.GetCategory();
+                }
+                else { throw new Exception("not support unknown sqlProvider"); }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public List<NutriDTO> GetNutri()
+        {
+            try
+            {
+                if (_sqlProvider == ESqlProvider.SQLSERVER)
+                {
+                    DAL.AllInOneDAL dal = GetDAL_MSSQLSERVER();
+                    return dal.GetNutri();
                 }
                 else { throw new Exception("not support unknown sqlProvider"); }
             }
@@ -269,6 +287,22 @@ namespace Cookapp_API.DataAccess.BLL
                 throw ex;
             }
         }
+        public int CreateNutri(HandleNutri nutri)
+        {
+            try
+            {
+                if (_sqlProvider == ESqlProvider.SQLSERVER)
+                {
+                    DAL.AllInOneDAL dal = GetDAL_MSSQLSERVER();
+                    return dal.CreateNutri(nutri);
+                }
+                else { throw new Exception("not support unknown sqlProvider"); }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public int CreateCate(AddCategory category)
         {
             try
@@ -285,6 +319,22 @@ namespace Cookapp_API.DataAccess.BLL
                 throw ex;
             }
         }
+        public int UpdateNutri(string id, HandleNutri nutri)
+        {
+            try
+            {
+                if (_sqlProvider == ESqlProvider.SQLSERVER)
+                {
+                    DAL.AllInOneDAL dal = GetDAL_MSSQLSERVER();
+                    return dal.UpdateNutri( id, nutri);
+                }
+                else { throw new Exception("not support unknown sqlProvider"); }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public int UpdateCate(string id, AddCategory category)
         {
             try
@@ -293,6 +343,22 @@ namespace Cookapp_API.DataAccess.BLL
                 {
                     DAL.AllInOneDAL dal = GetDAL_MSSQLSERVER();
                     return dal.UpdateCate( id, category);
+                }
+                else { throw new Exception("not support unknown sqlProvider"); }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public int DeleteNutri(string id)
+        {
+            try
+            {
+                if (_sqlProvider == ESqlProvider.SQLSERVER)
+                {
+                    DAL.AllInOneDAL dal = GetDAL_MSSQLSERVER();
+                    return dal.DeleteNutri(id);
                 }
                 else { throw new Exception("not support unknown sqlProvider"); }
             }

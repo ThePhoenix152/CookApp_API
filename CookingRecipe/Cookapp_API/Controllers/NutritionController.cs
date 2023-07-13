@@ -9,30 +9,31 @@ using Cookapp_API.Data;
 using Cookapp_API.DataAccess.BLL;
 using Cookapp_API.DataAccess.DTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.CategoryDTO;
+using Cookapp_API.DataAccess.DTO.AllInOneDTO.NutriDTO;
 
 namespace Cookapp_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoriesController : ControllerBase
+    public class NutritionController : ControllerBase
     {
         private readonly CookingRecipeDbContext _context;
         private IConfiguration _configuration;
 
-        public CategoriesController(CookingRecipeDbContext context, IConfiguration configuration)
+        public NutritionController(CookingRecipeDbContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
         }
 
         // GET: api/Categoriess
-        [HttpGet("getallcategories")]
-        public async Task<ActionResult<List<CategoryDTO>>> GetCategories()
+        [HttpGet("getallnutrition")]
+        public async Task<ActionResult<List<NutriDTO>>> GetNutri()
         {
            
             //return await _context.Accounts.ToListAsync();
             AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
-            List<CategoryDTO> accounts = bll.GetCategory();
+            List<NutriDTO> accounts = bll.GetNutri();
             return accounts;
             //return await _context.Categories.ToListAsync();
         }
@@ -40,22 +41,22 @@ namespace Cookapp_API.Controllers
 
         // PUT: api/Categories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("updatecategorybyid")]
-        public async Task<IActionResult> UpdateCate(string id, AddCategory category)
+        [HttpPut("updatenutribyid")]
+        public async Task<IActionResult> UpdateCate(string id, HandleNutri nutri)
         {
             AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
-            bll.UpdateCate( id,  category);
+            bll.UpdateNutri( id,  nutri);
             return NoContent();
         }
 
         // POST: api/Categories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("createnewcategory")]
-        public async Task<ActionResult<AddCategory>> CreateCate(AddCategory category)
+        [HttpPost("createnewcnutri")]
+        public async Task<ActionResult<HandleNutri>> CreateNutri(HandleNutri nutri)
         {
             AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
-            bll.CreateCate(category);
-            return category;
+            bll.CreateNutri(nutri);
+            return nutri;
         }
 
         // DELETE: api/Categories/5
@@ -63,7 +64,7 @@ namespace Cookapp_API.Controllers
         public async Task<IActionResult> DeleteCategory(string id)
         {
             AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
-            bll.DeleteCate(id);
+            bll.DeleteNutri(id);
             return NoContent();
         }
 
