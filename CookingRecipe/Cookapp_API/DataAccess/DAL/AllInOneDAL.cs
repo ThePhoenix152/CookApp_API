@@ -3,6 +3,7 @@ using Cookapp_API.Data;
 using Cookapp_API.DataAccess.DTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.AccountDTO;
+using Cookapp_API.DataAccess.DTO.AllInOneDTO.BlacklistDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.CommentDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.PlanDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.PostDTO;
@@ -19,6 +20,7 @@ namespace Cookapp_API.DataAccess.DAL
         public const string _TABLE_NAME_POST = "recipeposts";
         public const string _TABLE_NAME_CATEGORY = "category";
         public const string _TABLE_NAME_COMMENT = "comments";
+        public const string _TABLE_NAME_BLACKLIST = "blacklist";
         public const string _TABLE_NAME_PLAN = "[CookingRecipeDB].[dbo].[plan]";
         public AllInOneDAL() : base() { }
 
@@ -85,6 +87,38 @@ namespace Cookapp_API.DataAccess.DAL
                 }
                 else
                     return new List<PostDTO> { };
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public List<BlacklistDTO> GetBlackList(List<string> ids)
+        {
+            try
+            {
+                string query = "Select a.id, b.FullName, a.isBan, a.reason, c.content from "+ _TABLE_NAME_BLACKLIST +" a " +
+                    "left join "+ _TABLE_NAME_ACCOUNT +" b on a.ref_user = b.id " +
+                    "left join "+ _TABLE_NAME_COMMENT +" c on a.ref_comment = c.id";
+
+                //if (ids != null && ids.Count > 0)
+                //    query += "where a.id in(" + GlobalFuncs.ArrayStringToStringFilter(ids) + ")";
+                List<Hashtable> arrHsObj;
+                arrHsObj = ExecuteArrayHastable(query);
+                BlacklistDTO acc;
+                if (arrHsObj != null && arrHsObj.Count > 0)
+                {
+                    List<BlacklistDTO> arrRes = new List<BlacklistDTO>(arrHsObj.Count);
+                    for (int i = 0; i < arrHsObj.Count; i++)
+                    {
+                        acc = new BlacklistDTO(arrHsObj[i]);
+                        arrRes.Add(acc);
+                    }
+                    return arrRes;
+                }
+                else
+                    return new List<BlacklistDTO> { };
             }
             catch (Exception ex)
             {
@@ -225,7 +259,7 @@ namespace Cookapp_API.DataAccess.DAL
         {
             try
             {
-                string query = "Select a.id,a.title,a.content,a.create_time,a.update_time, a.cooktime,a.addtime,a.preptime,a.totaltime,a.image, b.catetitle, c.FullName, STRING_AGG(g.tagname,',') as tag, STRING_AGG(k.name,',') as nutrition from recipeposts a " +
+                string query = "Select a.id,a.title,a.content,a.create_time,a.update_time, a.cooktime,a.addtime,a.preptime,a.totaltime,a.image, b.catetitle, c.FullName, STRING_AGG(g.tagname,',') as tag, STRING_AGG(k.name,',') as nutrition, , STRING_AGG(i.name,',') as ingredient from recipeposts a " +
                     "left join category b on a.ref_cate = b.id " +
                     "left join accounts c on a.ref_account = c.id " +
                     "left join tag_post f on a.id = f.ref_post " +
@@ -421,6 +455,40 @@ namespace Cookapp_API.DataAccess.DAL
                     
 
                 }
+                if (filed != " values ")
+                {
+                    query += filed;
+                    return ExecuteNonQuery(query);
+                }
+                else
+                    return 0;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public int ReportComment(AddBlacklist blacklist, string accountid, string id)
+        {
+            try
+            {
+                string query = "insert into " + _TABLE_NAME_COMMENT;
+                string filed = " values ";
+                
+                    
+                filed += "('" + accountid + "'";
+                if (!string.IsNullOrEmpty(blacklist.reason))
+                {
+                    filed += (filed != " values " ? "," : "") + "'" + blacklist.reason + "'";
+                }
+                filed += (filed != " values " ? "," : "") + "'false'";
+                filed += (filed != " values " ? "," : "") + "'" + id + "'";
+                filed += "'" + Guid.NewGuid().ToString() + "')";
+                    
+
+                
                 if (filed != " values ")
                 {
                     query += filed;

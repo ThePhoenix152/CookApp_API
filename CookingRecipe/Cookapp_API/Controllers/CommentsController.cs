@@ -10,6 +10,7 @@ using Cookapp_API.DataAccess.BLL;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.AccoountDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.CommentDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.PostDTO;
+using Cookapp_API.DataAccess.DTO.AllInOneDTO.BlacklistDTO;
 
 namespace Cookapp_API.Controllers
 {
@@ -58,6 +59,15 @@ namespace Cookapp_API.Controllers
             AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
             bll.CreateComment(comment, accountid, postid);
             return comment;
+        }
+        // POST: api/Comments
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost("ReportComment")]
+        public async Task<ActionResult<AddBlacklist>> ReportComment(AddBlacklist blacklist, string accountid, string id)
+        {
+            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            bll.ReportComment(blacklist, accountid, id);
+            return blacklist;
         }
 
         // DELETE: api/Comments/5

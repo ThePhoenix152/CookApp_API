@@ -1,6 +1,7 @@
 ﻿using Cookapp_API.DataAccess.DTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.AccountDTO;
+using Cookapp_API.DataAccess.DTO.AllInOneDTO.BlacklistDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.CommentDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.PlanDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.PostDTO;
@@ -56,6 +57,23 @@ namespace Cookapp_API.DataAccess.BLL
                 {
                     DAL.AllInOneDAL dal = GetDAL_MSSQLSERVER();
                     return dal.GetPosts(ids);
+                }
+                else { throw new Exception("not support unknown sqlProvider"); }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public List<BlacklistDTO> GetBlackList(List<string> ids)
+        {
+            try
+            {
+                if (_sqlProvider == ESqlProvider.SQLSERVER)
+                {
+                    DAL.AllInOneDAL dal = GetDAL_MSSQLSERVER();
+                    return dal.GetBlackList(ids);
                 }
                 else { throw new Exception("not support unknown sqlProvider"); }
             }
@@ -243,6 +261,22 @@ namespace Cookapp_API.DataAccess.BLL
                 {
                     DAL.AllInOneDAL dal = GetDAL_MSSQLSERVER();
                     return dal.CreatePost(post);
+                }
+                else { throw new Exception("not support unknown sqlProvider"); }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public int ReportComment(AddBlacklist blacklist, string accountid, string id)
+        {
+            try
+            {
+                if (_sqlProvider == ESqlProvider.SQLSERVER)
+                {
+                    DAL.AllInOneDAL dal = GetDAL_MSSQLSERVER();
+                    return dal.ReportComment(blacklist, accountid, id);
                 }
                 else { throw new Exception("not support unknown sqlProvider"); }
             }
