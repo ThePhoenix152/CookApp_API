@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Cookapp_API.Data;
 using Cookapp_API.DataAccess.BLL;
 using Cookapp_API.DataAccess.DTO;
-using Cookapp_API.DataAccess.DTO.AllInOneDTO;
+using Cookapp_API.DataAccess.DTO.AllInOneDTO.CategoryDTO;
 
 namespace Cookapp_API.Controllers
 {

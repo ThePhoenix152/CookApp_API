@@ -2,17 +2,16 @@
 using System.Globalization;
 using System.Reflection;
 
-namespace Cookapp_API.DataAccess.DTO.AllInOneDTO
+namespace Cookapp_API.DataAccess.DTO.AllInOneDTO.CategoryDTO
 {
-    public class CategoryDTO
-    {
-        public string Id { get; set; } = null!;
+    public class AddCategory
 
+    {
         public string catetitle { get; set; } = null!;
 
-        public CategoryDTO() { }
+        public AddCategory() { }
         public void InitEmptyValue() { }
-        public CategoryDTO(Hashtable hsObj)
+        public AddCategory(Hashtable hsObj)
         {
             CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
             Thread.CurrentThread.CurrentCulture = culture;

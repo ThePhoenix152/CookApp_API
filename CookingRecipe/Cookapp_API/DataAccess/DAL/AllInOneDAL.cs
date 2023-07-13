@@ -1,9 +1,9 @@
 ﻿using Azure.Identity;
 using Cookapp_API.Data;
 using Cookapp_API.DataAccess.DTO;
-using Cookapp_API.DataAccess.DTO.AllInOneDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.AccountDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.BlacklistDTO;
+using Cookapp_API.DataAccess.DTO.AllInOneDTO.CategoryDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.CommentDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.PlanDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.PostDTO;
@@ -259,7 +259,7 @@ namespace Cookapp_API.DataAccess.DAL
         {
             try
             {
-                string query = "Select a.id,a.title,a.content,a.create_time,a.update_time, a.cooktime,a.addtime,a.preptime,a.totaltime,a.image, b.catetitle, c.FullName, STRING_AGG(g.tagname,',') as tag, STRING_AGG(k.name,',') as nutrition, , STRING_AGG(i.name,',') as ingredient from recipeposts a " +
+                string query = "Select a.id,a.title,a.content,a.create_time,a.update_time, a.cooktime,a.addtime,a.preptime,a.totaltime,a.image, b.catetitle, c.FullName, STRING_AGG(g.tagname,',') as tag, STRING_AGG(k.name,',') as nutrition,  STRING_AGG(i.name,',') as ingredient from recipeposts a " +
                     "left join category b on a.ref_cate = b.id " +
                     "left join accounts c on a.ref_account = c.id " +
                     "left join tag_post f on a.id = f.ref_post " +
@@ -433,6 +433,37 @@ namespace Cookapp_API.DataAccess.DAL
                 throw ex;
             }
         }
+        public int CreateCate(AddCategory category)
+        {
+            try
+            {
+                string query = "insert into " + _TABLE_NAME_POST;
+                string filed = " values ";
+                if (category != null)
+                {
+                    if (!string.IsNullOrEmpty(category.catetitle))
+                    {
+                        filed += "('" + category.catetitle + "'";
+                    }
+                    filed += (filed != " values " ? "," : "") + "'" + Guid.NewGuid().ToString() + "')";
+                   
+
+                }
+                if (filed != " values ")
+                {
+                    query += filed;
+                    return ExecuteNonQuery(query);
+                }
+                else
+                    return 0;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
         public int CreateComment(AddNewComment comment, string accountid, string postid)
         {
             try
@@ -474,7 +505,7 @@ namespace Cookapp_API.DataAccess.DAL
         {
             try
             {
-                string query = "insert into " + _TABLE_NAME_COMMENT;
+                string query = "insert into " + _TABLE_NAME_BLACKLIST;
                 string filed = " values ";
                 
                     
@@ -485,7 +516,7 @@ namespace Cookapp_API.DataAccess.DAL
                 }
                 filed += (filed != " values " ? "," : "") + "'false'";
                 filed += (filed != " values " ? "," : "") + "'" + id + "'";
-                filed += "'" + Guid.NewGuid().ToString() + "')";
+                filed += (filed != " values " ? "," : "") + "'" + Guid.NewGuid().ToString() + "')";
                     
 
                 
