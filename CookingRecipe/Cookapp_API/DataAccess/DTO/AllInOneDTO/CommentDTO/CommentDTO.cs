@@ -11,7 +11,7 @@ namespace Cookapp_API.DataAccess.DTO.AllInOneDTO.CommentDTO
 
         public string Content { get; set; } = null!;
 
-        public TimeSpan create_time { get; set; }
+        public TimeOnly create_time { get; set; }
 
         public string ref_user { get; set; } = null!;
 

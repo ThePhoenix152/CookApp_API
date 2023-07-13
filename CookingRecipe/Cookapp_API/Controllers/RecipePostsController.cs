@@ -51,6 +51,40 @@ namespace Cookapp_API.Controllers
             List<PostDTO> post = bll.GetPostByID(id);
             return post;
         }
+        // GET: api/Recipeposts/5
+        [HttpGet("getpostbycate")]
+        public async Task<ActionResult<List<PostDTO>>> GetPostbyCategory(string categoryid)
+        {
+          if (_context.Recipeposts == null)
+          {
+              return NotFound();
+          }
+            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            List<PostDTO> post = bll.GetPostbyCategory(categoryid);
+            return post;
+        }
+        [HttpGet("getpostbynutri")]
+        public async Task<ActionResult<List<PostDTO>>> GetPostbyNutri(string nutri)
+        {
+          if (_context.Recipeposts == null)
+          {
+              return NotFound();
+          }
+            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            List<PostDTO> post = bll.GetPostbyNutri(nutri);
+            return post;
+        }
+        [HttpGet("getpostbyingredient")]
+        public async Task<ActionResult<List<PostDTO>>> GetPostbyIngre(string ingre)
+        {
+          if (_context.Recipeposts == null)
+          {
+              return NotFound();
+          }
+            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            List<PostDTO> post = bll.GetPostbyIngre(ingre);
+            return post;
+        }
 
         // PUT: api/Recipeposts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

@@ -135,6 +135,135 @@ namespace Cookapp_API.DataAccess.DAL
 
 
         }
+        public List<PostDTO> GetPostbyCategory(string category)
+        {
+            try
+            {
+                string query = "Select a.id,a.title,a.content,a.create_time,a.update_time, a.cooktime,a.addtime,a.preptime,a.totaltime,a.image, b.catetitle, c.FullName, STRING_AGG(g.tagname,',') as tag, STRING_AGG(i.name,',') as ingredient, STRING_AGG(k.name,',') as nutrition from recipeposts a " +
+                    "left join category b on a.ref_cate = b.id " +
+                    "left join accounts c on a.ref_account = c.id " +
+                    "left join tag_post f on a.id = f.ref_post " +
+                    "left join tags g on f.ref_tag = g.id " +
+                    "left join ingre_post h on a.id = h.ref_post " +
+                    "left join ingredients i on h.ref_ingredient = i.id " +
+                    "left join nutri_post j on a.id = j.ref_post " +
+                    "left join nutrition k on j.ref_nutri = k.Id " +
+                    "where a.ref_cate='" + category + "' " +
+                    "group by a.id,a.title,a.content,a.create_time,a.update_time, a.cooktime,a.addtime,a.preptime,a.totaltime,a.image, b.catetitle, c.FullName";
+
+                //if (ids != null && ids.Count > 0)
+                //    query += "where a.id in(" + GlobalFuncs.ArrayStringToStringFilter(ids) + ")";
+
+                List<Hashtable> arrHsObj;
+                arrHsObj = ExecuteArrayHastable(query);
+                PostDTO acc;
+                if (arrHsObj != null && arrHsObj.Count > 0)
+                {
+                    List<PostDTO> arrRes = new List<PostDTO>(arrHsObj.Count);
+                    for (int i = 0; i < arrHsObj.Count; i++)
+                    {
+                        acc = new PostDTO(arrHsObj[i]);
+                        arrRes.Add(acc);
+                    }
+                    return arrRes;
+                }
+                else
+                    return new List<PostDTO> { };
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+        }
+        public List<PostDTO> GetPostbyNutri(string nutri)
+        {
+            try
+            {
+                string query = "Select a.id,a.title,a.content,a.create_time,a.update_time, a.cooktime,a.addtime,a.preptime,a.totaltime,a.image, b.catetitle, c.FullName, STRING_AGG(g.tagname,',') as tag, STRING_AGG(i.name,',') as ingredient from recipeposts a " +
+                    "left join category b on a.ref_cate = b.id " +
+                    "left join accounts c on a.ref_account = c.id " +
+                    "left join tag_post f on a.id = f.ref_post " +
+                    "left join tags g on f.ref_tag = g.id " +
+                    "left join ingre_post h on a.id = h.ref_post " +
+                    "left join ingredients i on h.ref_ingredient = i.id " +
+                    "left join nutri_post j on a.id = j.ref_post " +
+                    "left join nutrition k on j.ref_nutri = k.Id " +
+                    "where k.name='" + nutri + "' " +
+                    "group by a.id,a.title,a.content,a.create_time,a.update_time, a.cooktime,a.addtime,a.preptime,a.totaltime,a.image, b.catetitle, c.FullName";
+
+                //if (ids != null && ids.Count > 0)
+                //    query += "where a.id in(" + GlobalFuncs.ArrayStringToStringFilter(ids) + ")";
+
+                List<Hashtable> arrHsObj;
+                arrHsObj = ExecuteArrayHastable(query);
+                PostDTO acc;
+                if (arrHsObj != null && arrHsObj.Count > 0)
+                {
+                    List<PostDTO> arrRes = new List<PostDTO>(arrHsObj.Count);
+                    for (int i = 0; i < arrHsObj.Count; i++)
+                    {
+                        acc = new PostDTO(arrHsObj[i]);
+                        arrRes.Add(acc);
+                    }
+                    return arrRes;
+                }
+                else
+                    return new List<PostDTO> { };
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+        }
+        public List<PostDTO> GetPostbyIngre(string ingre)
+        {
+            try
+            {
+                string query = "Select a.id,a.title,a.content,a.create_time,a.update_time, a.cooktime,a.addtime,a.preptime,a.totaltime,a.image, b.catetitle, c.FullName, STRING_AGG(g.tagname,',') as tag, STRING_AGG(k.name,',') as nutrition from recipeposts a " +
+                    "left join category b on a.ref_cate = b.id " +
+                    "left join accounts c on a.ref_account = c.id " +
+                    "left join tag_post f on a.id = f.ref_post " +
+                    "left join tags g on f.ref_tag = g.id " +
+                    "left join ingre_post h on a.id = h.ref_post " +
+                    "left join ingredients i on h.ref_ingredient = i.id " +
+                    "left join nutri_post j on a.id = j.ref_post " +
+                    "left join nutrition k on j.ref_nutri = k.Id " +
+                    "where i.name='" + ingre + "' " +
+                    "group by a.id,a.title,a.content,a.create_time,a.update_time, a.cooktime,a.addtime,a.preptime,a.totaltime,a.image, b.catetitle, c.FullName";
+
+                //if (ids != null && ids.Count > 0)
+                //    query += "where a.id in(" + GlobalFuncs.ArrayStringToStringFilter(ids) + ")";
+
+                List<Hashtable> arrHsObj;
+                arrHsObj = ExecuteArrayHastable(query);
+                PostDTO acc;
+                if (arrHsObj != null && arrHsObj.Count > 0)
+                {
+                    List<PostDTO> arrRes = new List<PostDTO>(arrHsObj.Count);
+                    for (int i = 0; i < arrHsObj.Count; i++)
+                    {
+                        acc = new PostDTO(arrHsObj[i]);
+                        arrRes.Add(acc);
+                    }
+                    return arrRes;
+                }
+                else
+                    return new List<PostDTO> { };
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+        }
 
 
         public int UpdatePost(string id, UpdatePostDTO post)
@@ -284,7 +413,7 @@ namespace Cookapp_API.DataAccess.DAL
                         filed += (filed != " values " ? "," : "") + "'" + comment.Content + "'";
                     }
 
-                        filed += (filed != " values " ? "," : "") + "'" + DateTime.Now.ToString("HH:mm:ss") + "'";
+                        filed += (filed != " values " ? "," : "") + "'" + DateTime.Now + "'";
                         filed += (filed != " values " ? "," : "") + "'" + accountid + "'";
                         filed += (filed != " values " ? "," : "") + "'" + postid + "')";
                     
