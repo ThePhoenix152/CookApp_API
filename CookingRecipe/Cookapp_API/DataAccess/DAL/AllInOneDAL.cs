@@ -7,8 +7,10 @@ using Cookapp_API.DataAccess.DTO.AllInOneDTO.CategoryDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.CommentDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.PlanDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.PostDTO;
+using Humanizer;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol;
+using System;
 using System.Collections;
 using System.Numerics;
 
@@ -225,7 +227,7 @@ namespace Cookapp_API.DataAccess.DAL
                     "left join ingredients i on h.ref_ingredient = i.id " +
                     "left join nutri_post j on a.id = j.ref_post " +
                     "left join nutrition k on j.ref_nutri = k.Id " +
-                    "where k.name='" + nutri + "' " +
+                    "WHERE EXISTS (SELECT 1 FROM nutri_post h2 INNER JOIN nutrition i2 ON h2.ref_nutri = i2.id WHERE h2.ref_post = a.id AND i2.name = '" + nutri + "')" +
                     "group by a.id,a.title,a.content,a.create_time,a.update_time, a.cooktime,a.addtime,a.preptime,a.totaltime,a.image, b.catetitle, c.FullName";
 
                 //if (ids != null && ids.Count > 0)
@@ -259,7 +261,7 @@ namespace Cookapp_API.DataAccess.DAL
         {
             try
             {
-                string query = "Select a.id,a.title,a.content,a.create_time,a.update_time, a.cooktime,a.addtime,a.preptime,a.totaltime,a.image, b.catetitle, c.FullName, STRING_AGG(g.tagname,',') as tag, STRING_AGG(k.name,',') as nutrition,  STRING_AGG(i.name,',') as ingredient from recipeposts a " +
+                string query = "Select a.id,a.title,a.content,a.create_time,a.update_time, a.cooktime,a.addtime,a.preptime,a.totaltime,a.image, b.catetitle, c.FullName, STRING_AGG(g.tagname,',') as tag, STRING_AGG(k.name,',') as nutrition, STRING_AGG(i.name,',') as ingredient from recipeposts a " +
                     "left join category b on a.ref_cate = b.id " +
                     "left join accounts c on a.ref_account = c.id " +
                     "left join tag_post f on a.id = f.ref_post " +
@@ -268,7 +270,7 @@ namespace Cookapp_API.DataAccess.DAL
                     "left join ingredients i on h.ref_ingredient = i.id " +
                     "left join nutri_post j on a.id = j.ref_post " +
                     "left join nutrition k on j.ref_nutri = k.Id " +
-                    "where i.name='" + ingre + "' " +
+                    "WHERE EXISTS (SELECT 1 FROM ingre_post h2 INNER JOIN ingredients i2 ON h2.ref_ingredient = i2.id WHERE h2.ref_post = a.id AND i2.name = '"+ ingre +"')" +
                     "group by a.id,a.title,a.content,a.create_time,a.update_time, a.cooktime,a.addtime,a.preptime,a.totaltime,a.image, b.catetitle, c.FullName";
 
                 //if (ids != null && ids.Count > 0)
@@ -342,6 +344,31 @@ namespace Cookapp_API.DataAccess.DAL
                     //}    
 
 
+                }
+                if (filed != " SET ")
+                {
+                    query += filed + " where id='" + id + "'";
+                    return ExecuteNonQuery(query);
+                }
+                else
+                    return 0;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public int UpdateBanBlackList(string id, banblacklist set)
+        {
+            try
+            {
+                string query = "update " + _TABLE_NAME_BLACKLIST;
+                string filed = " SET ";
+                if (set != null)
+                {
+                        filed += " isBan='" + set.isBan + "'";
                 }
                 if (filed != " SET ")
                 {
@@ -752,6 +779,23 @@ namespace Cookapp_API.DataAccess.DAL
                 throw e;
             }
 
+        }
+        public int UpdateAccountStatus ()
+        {
+            try
+            {
+                string query = "UPDATE " + _TABLE_NAME_ACCOUNT +
+                    " SET isActive = CASE " +
+                    "WHEN isBan = 1 THEN 0 " +
+                    "ELSE isActive " +
+                    "END FROM " + _TABLE_NAME_ACCOUNT +
+                    " AS a JOIN "+_TABLE_NAME_BLACKLIST+" AS b ON a.id = b.ref_user";
+                return ExecuteNonQuery(query);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
         public List<GetTimeByDay> GetlistByDay(string id,string day)
         {

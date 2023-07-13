@@ -91,10 +91,6 @@ namespace Cookapp_API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<UpdatePostDTO>> PutRecipepost(string id, UpdatePostDTO post)
         {
-            if (id != post.Id)
-            {
-                return BadRequest();
-            }
             AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
             bll.UpdatePost(id, post);
             return post;
