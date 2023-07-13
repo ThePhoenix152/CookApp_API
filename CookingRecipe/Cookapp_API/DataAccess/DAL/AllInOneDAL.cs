@@ -9,6 +9,7 @@ using Cookapp_API.DataAccess.DTO.AllInOneDTO.PlanDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.PostDTO;
 using Humanizer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using NuGet.Protocol;
 using System;
 using System.Collections;
@@ -464,7 +465,7 @@ namespace Cookapp_API.DataAccess.DAL
         {
             try
             {
-                string query = "insert into " + _TABLE_NAME_POST;
+                string query = "insert into " + _TABLE_NAME_CATEGORY;
                 string filed = " values ";
                 if (category != null)
                 {
@@ -477,6 +478,35 @@ namespace Cookapp_API.DataAccess.DAL
 
                 }
                 if (filed != " values ")
+                {
+                    query += filed;
+                    return ExecuteNonQuery(query);
+                }
+                else
+                    return 0;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public int UpdateCate(string id, AddCategory category)
+        {
+            try
+            {
+                string query = "Update " + _TABLE_NAME_CATEGORY;
+                string filed = " SET ";
+                if (category != null)
+                {
+                    if (!string.IsNullOrEmpty(category.catetitle))
+                    {
+                        filed += " catetitle='" + category.catetitle + "'";
+                    }
+                    filed += "where id='" + id + "'"; 
+                }
+                if (filed != " SET ")
                 {
                     query += filed;
                     return ExecuteNonQuery(query);
@@ -780,6 +810,19 @@ namespace Cookapp_API.DataAccess.DAL
             }
 
         }
+        public int DeleteCate (string id)
+        {
+            try
+            {
+                string query = "DELETE FROM " + _TABLE_NAME_CATEGORY + " WHERE id = '" + id + "'";
+                return ExecuteNonQuery(query);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+        }
         public int UpdateAccountStatus ()
         {
             try
@@ -787,7 +830,7 @@ namespace Cookapp_API.DataAccess.DAL
                 string query = "UPDATE " + _TABLE_NAME_ACCOUNT +
                     " SET isActive = CASE " +
                     "WHEN isBan = 1 THEN 0 " +
-                    "ELSE isActive " +
+                    "ELSE 1 " +
                     "END FROM " + _TABLE_NAME_ACCOUNT +
                     " AS a JOIN "+_TABLE_NAME_BLACKLIST+" AS b ON a.id = b.ref_user";
                 return ExecuteNonQuery(query);

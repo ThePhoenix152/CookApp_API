@@ -269,6 +269,54 @@ namespace Cookapp_API.DataAccess.BLL
                 throw ex;
             }
         }
+        public int CreateCate(AddCategory category)
+        {
+            try
+            {
+                if (_sqlProvider == ESqlProvider.SQLSERVER)
+                {
+                    DAL.AllInOneDAL dal = GetDAL_MSSQLSERVER();
+                    return dal.CreateCate(category);
+                }
+                else { throw new Exception("not support unknown sqlProvider"); }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public int UpdateCate(string id, AddCategory category)
+        {
+            try
+            {
+                if (_sqlProvider == ESqlProvider.SQLSERVER)
+                {
+                    DAL.AllInOneDAL dal = GetDAL_MSSQLSERVER();
+                    return dal.UpdateCate( id, category);
+                }
+                else { throw new Exception("not support unknown sqlProvider"); }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public int DeleteCate(string id)
+        {
+            try
+            {
+                if (_sqlProvider == ESqlProvider.SQLSERVER)
+                {
+                    DAL.AllInOneDAL dal = GetDAL_MSSQLSERVER();
+                    return dal.DeleteCate(id);
+                }
+                else { throw new Exception("not support unknown sqlProvider"); }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public int UpdateBanBlackList(string id, banblacklist set)
         {
             try
